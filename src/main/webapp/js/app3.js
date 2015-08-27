@@ -2,9 +2,9 @@ Ext.define('Writer.Form', {
     extend: 'Ext.form.Panel',
     alias: 'widget.writerform',
 
-    requires: ['Ext.form.field.Text', 'Ext.Viewport'],
+    requires: ['Ext.form.field.Text','Ext.Viewport'],
 
-    initComponent: function () {
+    initComponent: function(){
         Ext.apply(this, {
             activeRecord: null,
             iconCls: 'icon-user',
@@ -43,6 +43,13 @@ Ext.define('Writer.Form', {
                 dock: 'bottom',
                 ui: 'footer',
                 items: ['->', {
+                    iconCls: 'icon-save',
+                    itemId: 'save',
+                    text: 'Save',
+                    disabled: true,
+                    scope: this,
+                    handler: this.onSave
+                }, {
                     iconCls: 'icon-user-add',
                     text: 'Create',
                     scope: this,
@@ -58,7 +65,7 @@ Ext.define('Writer.Form', {
         this.callParent();
     },
 
-    setActiveRecord: function (record) {
+    setActiveRecord: function(record){
         this.activeRecord = record;
         if (record) {
             this.down('#save').enable();
@@ -69,7 +76,7 @@ Ext.define('Writer.Form', {
         }
     },
 
-    onSave: function () {
+    onSave: function(){
         var active = this.activeRecord,
             form = this.getForm();
 
@@ -82,21 +89,17 @@ Ext.define('Writer.Form', {
         }
     },
 
-    onCreate: function () {
+    onCreate: function(){
         var form = this.getForm();
 
-        alert(1);
         if (form.isValid()) {
-            alert(2);
-            alert(store);
-            store.insert(0, form.getValues());
-            //this.fireEvent('create', this, form.getValues());
+            this.fireEvent('create', this, form.getValues());
             form.reset();
         }
 
     },
 
-    onReset: function () {
+    onReset: function(){
         this.setActiveRecord(null);
         this.getForm().reset();
     }
@@ -112,7 +115,7 @@ Ext.define('Writer.Grid', {
         'Ext.toolbar.TextItem'
     ],
 
-    initComponent: function () {
+    initComponent: function(){
 
         this.editing = Ext.create('Ext.grid.plugin.CellEditing');
 
@@ -140,51 +143,43 @@ Ext.define('Writer.Grid', {
                 xtype: 'toolbar',
                 dock: 'bottom',
                 items: [
-                    //    {
-                    //    xtype: 'tbtext',
-                    //    text: '<b>@cfg</b>'
-                    //}, '|', {
-                    //    text: 'autoSync',
-                    //    enableToggle: true,
-                    //    pressed: true,
-                    //    tooltip: 'When enabled, Store will execute Ajax requests as soon as a Record becomes dirty.',
-                    //    scope: this,
-                    //    toggleHandler: function(btn, pressed){
-                    //        this.store.autoSync = pressed;
-                    //    }
-                    //}, {
-                    //    text: 'batch',
-                    //    enableToggle: true,
-                    //    pressed: true,
-                    //    tooltip: 'When enabled, Store will batch all records for each type of CRUD verb into a single Ajax request.',
-                    //    scope: this,
-                    //    toggleHandler: function(btn, pressed){
-                    //        this.store.getProxy().batchActions = pressed;
-                    //    }
-                    //}, {
-                    //    text: 'writeAllFields',
-                    //    enableToggle: true,
-                    //    pressed: false,
-                    //    tooltip: 'When enabled, Writer will write *all* fields to the server -- not just those that changed.',
-                    //    scope: this,
-                    //    toggleHandler: function(btn, pressed){
-                    //        this.store.getProxy().getWriter().writeAllFields = pressed;
-                    //    }
-                ]
+                //    {
+                //    xtype: 'tbtext',
+                //    text: '<b>@cfg</b>'
+                //}, '|', {
+                //    text: 'autoSync',
+                //    enableToggle: true,
+                //    pressed: true,
+                //    tooltip: 'When enabled, Store will execute Ajax requests as soon as a Record becomes dirty.',
+                //    scope: this,
+                //    toggleHandler: function(btn, pressed){
+                //        this.store.autoSync = pressed;
+                //    }
+                //}, {
+                //    text: 'batch',
+                //    enableToggle: true,
+                //    pressed: true,
+                //    tooltip: 'When enabled, Store will batch all records for each type of CRUD verb into a single Ajax request.',
+                //    scope: this,
+                //    toggleHandler: function(btn, pressed){
+                //        this.store.getProxy().batchActions = pressed;
+                //    }
+                //}, {
+                //    text: 'writeAllFields',
+                //    enableToggle: true,
+                //    pressed: false,
+                //    tooltip: 'When enabled, Writer will write *all* fields to the server -- not just those that changed.',
+                //    scope: this,
+                //    toggleHandler: function(btn, pressed){
+                //        this.store.getProxy().getWriter().writeAllFields = pressed;
+                //    }
+                    ]
             }, {
                 weight: 1,
                 xtype: 'toolbar',
                 dock: 'bottom',
                 ui: 'footer',
-                items: ['->', {
-                    iconCls: 'icon-add',
-                    text: 'Add',
-                    //disabled: true,
-                    itemId: 'add',
-                    scope: this,
-                    handler: this.onAddClick
-
-                }, {
+                items: ['->',{
                     iconCls: 'icon-delete',
                     text: 'Delete',
                     disabled: true,
@@ -199,7 +194,7 @@ Ext.define('Writer.Grid', {
                     handler: this.onSync
                 }]
             }],
-            forceFix: true,
+            forceFix:true,
             columns: [{
                 text: 'ID',
                 sortable: true,
@@ -208,7 +203,7 @@ Ext.define('Writer.Grid', {
                 hideable: false,
                 menuDisabled: true,
                 dataIndex: 'id',
-                renderer: function (value) {
+                renderer: function(value){
                     return Ext.isNumber(value) ? value : '&nbsp;';
                 }
             }, {
@@ -219,7 +214,7 @@ Ext.define('Writer.Grid', {
                 field: {
                     type: 'textfield'
                 }
-            }, {
+            },{
                 header: 'Device',
                 flex: 1,
                 sortable: true,
@@ -229,7 +224,7 @@ Ext.define('Writer.Grid', {
                 }
             }, {
                 header: 'Mac',
-                flex: 1,
+                flex:1,
                 sortable: true,
                 dataIndex: 'mac',
                 field: {
@@ -237,7 +232,7 @@ Ext.define('Writer.Grid', {
                 }
             }, {
                 header: 'Ip',
-                flex: 1,
+                flex:1,
                 sortable: true,
                 dataIndex: 'ip',
                 field: {
@@ -245,7 +240,7 @@ Ext.define('Writer.Grid', {
                 }
             }, {
                 header: 'Description',
-                flex: 1,
+                flex:1,
                 sortable: false,
                 dataIndex: 'description',
                 field: {
@@ -257,16 +252,16 @@ Ext.define('Writer.Grid', {
         this.getSelectionModel().on('selectionchange', this.onSelectChange, this);
     },
 
-    onSelectChange: function (selModel, selections) {
+    onSelectChange: function(selModel, selections){
         this.down('#delete').setDisabled(selections.length === 0);
     },
 
-    onSync: function () {
+    onSync: function(){
         this.store.sync();
 
     },
 
-    onDeleteClick: function () {
+    onDeleteClick: function(){
         var selection = this.getView().getSelectionModel().getSelection()[0];
         if (selection) {
             this.store.remove(selection);
@@ -274,24 +269,19 @@ Ext.define('Writer.Grid', {
         this.store.sync();
     },
 
-    onAddClick: function () {
-        //if (this.window == null) {
-            this.window = new Ext.Window({
-                items: [{
-                    xtype: 'writerform',
-                    store: this.store,
-                    manageHeight: false,
-                    margin: '0 0 10 0',
-                    listeners: {
-                        create: function (form, data) {
-                            store.insert(0, data);
-                            //store.sync();
-                        }
-                    }
-                }]
-            })
-        //}
-            this.window.show();
+    onAddClick: function(){
+        var rec = new Writer.Person({
+            first: '',
+            last: '',
+            email: ''
+        }), edit = this.editing;
+
+        edit.cancelEdit();
+        this.store.insert(0, rec);
+        edit.startEditByPosition({
+            row: 0,
+            column: 1
+        });
     }
 });
 
@@ -337,7 +327,7 @@ Ext.require([
     'Ext.window.MessageBox'
 ]);
 
-Ext.onReady(function () {
+Ext.onReady(function(){
     Ext.tip.QuickTipManager.init();
 
     //Ext.create('Ext.button.Button', {
@@ -398,11 +388,11 @@ Ext.onReady(function () {
             writer: {
                 type: 'json',
                 writeAllFields: true,
-                clientIdProperty: 'clientid',
+                clientIdProperty:'clientid',
                 rootProperty: 'data'
             },
             listeners: {
-                exception: function (proxy, response, operation) {
+                exception: function(proxy, response, operation){
                     Ext.MessageBox.show({
                         title: 'REMOTE EXCEPTION',
                         msg: operation.getError(),
@@ -413,7 +403,7 @@ Ext.onReady(function () {
             }
         },
         listeners: {
-            write: function (proxy, operation) {
+            write: function(proxy, operation){
                 if (operation.action == 'destroy') {
                     main.child('#form').setActiveRecord(null);
                 }
@@ -423,42 +413,45 @@ Ext.onReady(function () {
     });
 
 
-    //var main = Ext.create('Ext.container.Container', {
-    //    padding: '0 0 0 0',
-    //    //height: Ext.themeName === 'neptune' ? 700 : 650,
-    //    renderTo: document.body,
-    //    layout: 'fit',
-    //    items: [
-    //
-    //        {
-    //        itemId: 'grid',
-    //        xtype: 'writergrid',
-    //        title: 'Devices List',
-    //        store: store,
-    //        listeners: {
-    //            selectionchange: function(selModel, selected) {
-    //                main.child('#form').setActiveRecord(selected[0] || null);
-    //            }
-    //        }
-    //    }]
-    //});
-    new Ext.Viewport({
-        layout: 'border',
-        items: [{
-            region: 'center',
-            layout: 'fit',
-            items: [
-                {
-                    itemId: 'grid',
-                    xtype: 'writergrid',
-                    title: 'Devices List',
-                    store: store,
-                    listeners: {
-                        selectionchange: function (selModel, selected) {
-                            //main.child('#form').setActiveRecord(selected[0] || null);
-                        }
-                    }
-                }]
+    var main = Ext.create('Ext.container.Container', {
+        padding: '0 0 0 0',
+        //height: Ext.themeName === 'neptune' ? 700 : 650,
+        renderTo: document.body,
+        layout: {
+            type: 'vbox',
+            align: 'stretch'
+        },
+        items: [
+            {
+            itemId: 'form',
+            xtype: 'writerform',
+            manageHeight: false,
+            margin: '0 0 10 0',
+            listeners: {
+                create: function(form, data){
+                    store.insert(0, data);
+                    //store.sync();
+                }
+            }
+        },
+            {
+            itemId: 'grid',
+            xtype: 'writergrid',
+            title: 'Devices List',
+            store: store,
+            listeners: {
+                selectionchange: function(selModel, selected) {
+                    main.child('#form').setActiveRecord(selected[0] || null);
+                }
+            }
         }]
     });
+    //new Ext.Viewport( {
+    //    layout : 'border',
+    //    items : [ {
+    //        region : 'center',
+    //        layout : 'fit',
+    //        items : [ main ]
+    //    } ]
+    //});
 });

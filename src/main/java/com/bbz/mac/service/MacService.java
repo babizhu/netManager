@@ -23,7 +23,7 @@ public class MacService extends IdEntityService<MacInfo>{
         return query( null,null );
     }
 
-    public MacInfo add( MacInfo macInfo ){
+    public MacInfo create( MacInfo macInfo ){
         return dao().insert( macInfo );
     }
 

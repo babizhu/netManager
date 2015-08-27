@@ -30,4 +30,10 @@ public class MacInfo{
     private String mac;
 
 
+    @Column
+    private String ip;
+
+    @Column
+    private String description;
+
 }
