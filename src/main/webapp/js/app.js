@@ -85,12 +85,9 @@ Ext.define('Writer.Form', {
     onCreate: function () {
         var form = this.getForm();
 
-        alert(1);
         if (form.isValid()) {
-            alert(2);
-            alert(store);
-            store.insert(0, form.getValues());
-            //this.fireEvent('create', this, form.getValues());
+            //store.insert(0, form.getValues());
+            this.fireEvent('create', this, form.getValues());
             form.reset();
         }
 
@@ -279,14 +276,15 @@ Ext.define('Writer.Grid', {
             this.window = new Ext.Window({
                 items: [{
                     xtype: 'writerform',
-                    store: this.store,
+
                     manageHeight: false,
                     margin: '0 0 10 0',
                     listeners: {
                         create: function (form, data) {
-                            store.insert(0, data);
-                            //store.sync();
-                        }
+                            this.store.insert(0, data);
+                            this.store.sync();
+                        },
+                        scope : this
                     }
                 }]
             })

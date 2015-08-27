@@ -7,6 +7,6 @@
 <script src="js/app.js"></script>
 </head>
 <body>
-<h2>Hello World!中文</h2>
+<h2>Hello World中文</h2>
 </body>
 </html>
