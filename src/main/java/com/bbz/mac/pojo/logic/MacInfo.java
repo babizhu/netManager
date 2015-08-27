@@ -9,12 +9,12 @@ import org.nutz.dao.entity.annotation.Table;
  * Created by   liu_k
  * Time         2015/8/26 16:30
  */
-@Table("mac_info")   // 声明了Person对象的数据表
+@Table("mac_info")   // 澹版槑浜哖erson瀵硅薄鐨勬暟鎹〃
 
 @Data
 
 public class MacInfo{
-    @Id       // 表示该字段为一个自增长的Id,注意,是数据库表中自增!!
+    @Id       // 琛ㄧず璇ュ瓧娈典负涓�涓嚜澧為暱鐨処d,娉ㄦ剰,鏄暟鎹簱琛ㄤ腑鑷!!
     private int id;
 
 

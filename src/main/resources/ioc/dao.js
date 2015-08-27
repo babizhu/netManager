@@ -7,7 +7,7 @@ var ioc = {
             depose : 'close'
         },
         fields : {
-            // ÇëĞŞ¸ÄÏÂÃæµÄÊı¾İ¿âÁ¬½ÓĞÅÏ¢
+            // è¯·ä¿®æ”¹ä¸‹é¢çš„æ•°æ®åº“è¿æ¥ä¿¡æ¯
             //url : 'jdbc:h2:~/apps/nutzdemo-shiro/db/db;CACHE_SIZE=131072;AUTO_RECONNECT=TRUE',
             url: 'jdbc:mysql://192.168.1.11:3306/mac?',
             username : 'root',
