@@ -10,6 +10,7 @@ import org.nutz.mvc.Setup;
 public class NetManagerSetUp implements Setup{
 
 
+
     public void init( NutConfig nutConfig ){
 
     }
@@ -17,4 +18,6 @@ public class NetManagerSetUp implements Setup{
     public void destroy( NutConfig nutConfig ){
 
     }
+
+
 }

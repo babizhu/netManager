@@ -2,7 +2,7 @@ Ext.define('Writer.Form', {
     extend: 'Ext.form.Panel',
     alias: 'widget.writerform',
 
-    requires: ['Ext.form.field.Text', 'Ext.Viewport','Ext.ux.form.SearchField'],
+    requires: ['Ext.form.field.Text', 'Ext.Viewport'/**,'Ext.ux.form.SearchField'**/],
 
     initComponent: function () {
         Ext.apply(this, {
@@ -29,13 +29,11 @@ Ext.define('Writer.Form', {
                 fieldLabel: 'Mac address',
                 name: 'mac',
                 allowBlank: false
-            }
-            //    , {
-            //    fieldLabel: 'Ip',
-            //    name: 'ip',
-            //    allowBlank: false
-            //}
-                , {
+            }, {
+                fieldLabel: 'Ip',
+                name: 'ip',
+                allowBlank: false
+            }, {
                 fieldLabel: 'Description',
                 name: 'description',
                 allowBlank: true
@@ -63,10 +61,10 @@ Ext.define('Writer.Form', {
     setActiveRecord: function (record) {
         this.activeRecord = record;
         if (record) {
-            //this.down('#save').enable();
+            this.down('#save').enable();
             this.getForm().loadRecord(record);
         } else {
-            //this.down('#save').disable();
+            this.down('#save').disable();
             this.getForm().reset();
         }
     },
@@ -183,15 +181,7 @@ Ext.define('Writer.Grid', {
                 xtype: 'toolbar',
                 dock: 'bottom',
                 ui: 'footer',
-                items: ['->',
-                    ,{
-                        width : 300,
-                        fieldLabel : 'search',
-                        labelWidth : 50,
-                        xtype : 'searchfield',
-                        scope: this,
-                        store : this.store
-                    },{
+                items: ['->', {
                     iconCls: 'icon-add',
                     text: 'Add',
                     //disabled: true,
@@ -207,14 +197,19 @@ Ext.define('Writer.Grid', {
                     scope: this,
                     handler: this.onDeleteClick
 
+                }, {
+                    iconCls: 'icon-save',
+                    text: 'Sync',
+                    scope: this,
+                    handler: this.onSync
                 }
-                //    , {
-                //    iconCls: 'icon-save',
-                //    text: 'Sync',
-                //    scope: this,
-                //    handler: this.onSync
+                //    ,{
+                //    width : 300,
+                //    fieldLabel : '搜索',
+                //    labelWidth : 50,
+                //    xtype : 'searchfield',
+                //    store : this.store
                 //}
-
                 ]
 
             }],
@@ -254,17 +249,15 @@ Ext.define('Writer.Grid', {
                 field: {
                     type: 'textfield'
                 }
-            },
-            //    {
-            //    header: 'Ip',
-            //    flex: 1,
-            //    sortable: true,
-            //    dataIndex: 'ip',
-            //    field: {
-            //        type: 'textfield'
-            //    }
-            //},
-                {
+            }, {
+                header: 'Ip',
+                flex: 1,
+                sortable: true,
+                dataIndex: 'ip',
+                field: {
+                    type: 'textfield'
+                }
+            }, {
                 header: 'Description',
                 flex: 1,
                 sortable: false,
@@ -274,7 +267,6 @@ Ext.define('Writer.Grid', {
                 }
             }]
         });
-        this.store.load();
         this.callParent();
         this.getSelectionModel().on('selectionchange', this.onSelectChange, this);
     },
@@ -284,9 +276,7 @@ Ext.define('Writer.Grid', {
     },
 
     onSync: function () {
-        //this.store.sync();
-
-        this.store.filter('device', 'mac');
+        this.store.sync();
 
     },
 
@@ -301,9 +291,9 @@ Ext.define('Writer.Grid', {
     onAddClick: function () {
         //if (this.window == null) {
         this.window = new Ext.Window({
-                resizable:false,
             items: [{
                 xtype: 'writerform',
+
                 //manageHeight: false,
                 margin: '0 0 10 0',
                 listeners: {
@@ -344,12 +334,13 @@ Ext.define('Writer.Grid', {
 //});
 Ext.define('MacInfo', {
     extend: 'Ext.data.Model',
-    //idProperty: 'taskId',
+    idProperty: 'taskId',
     fields: [
         {name: 'id', type: 'int'},
         {name: 'uname', type: 'string'},
         {name: 'mac', type: 'string'},
         {name: 'ip', type: 'string'},
+        //{name: 'description', type: 'string'},
         {name: 'device', type: 'string'},
         {name: 'description', type: 'string'}
     ]
@@ -405,9 +396,8 @@ Ext.onReady(function () {
 
     var store = Ext.create('Ext.data.Store', {
         model: 'MacInfo',
-        //autoLoad: true,
+        autoLoad: true,
         autoSync: true,
-        remoteFilter:false,
         proxy: {
             type: 'ajax',
             api: {
@@ -478,7 +468,7 @@ Ext.onReady(function () {
                 {
                     itemId: 'grid',
                     xtype: 'writergrid',
-                    title: 'Devices List',
+                    title: 'Devices List[双击单元格可进行编辑]',
                     store: store,
                     listeners: {
                         selectionchange: function (selModel, selected) {
